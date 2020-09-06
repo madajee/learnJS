@@ -3,7 +3,7 @@
 app.directive("customHeader", function(){
     return {
         restrict: 'E',
-        templateUrl: './directives/custom-header.html',
+        templateUrl: 'pages/directives/custom-header.html',
         replace: true
     }
 });

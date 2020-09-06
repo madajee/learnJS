@@ -9,11 +9,15 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" href="app.css" />
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-route.js"></script>
         <script src="app.js"></script>
-        <script src="/directives/directives.js"></script>
+        <script src="directives.js"></script>
+        <script src="routes.js"></script>
+        <script src="controllers.js"></script>
     </head>
 
     <body>
         <custom-header></custom-header>
+        <div ng-view></div>
     </body>
  </html>
