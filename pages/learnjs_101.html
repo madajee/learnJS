@@ -1,0 +1,57 @@
+<div class = "container-fluid mt-2">
+    <div class="row">
+        <learnjs-side-menu></learnjs-side-menu>
+        <div class="col-10">
+            <h6 class="text-center">LEARN JS 101</h6>
+            <h3>Building Objects</h3>
+            <ul>
+                <li>
+                    In Javascript, we work with primitive types, arrays, objects and functions, but <strong>object</strong> is the most important data type as it is the container for properties & methods. 
+                </li>
+                <li>
+                    Simplistically, we can create an object using an <strong>object literal.</strong>
+                <pre>
+                <code> 
+                var car = {make: “Nissan”, model: “Altima”}
+                </code> 
+                </pre>  
+                </li>
+                <li>
+                    <strong>Object Constructor</strong> is another way of creating an object.
+                <pre>
+                <code> 
+                const car = new Object();
+                car.make = ‘nissan’;
+                </code> 
+                </pre> 
+                </li>
+                <li>
+                    <strong>Function Constructor</strong> is the recommended way when we have to instantiate several objects with the same properties and methods. It is also inline with OOPs way of creating objects from class blueprints.
+                <pre>
+                <code> 
+                function car (make, model) {
+                    this.make = make;
+                    this.model =  model;
+                }
+                let vehicleA = new car(‘toyota’, ‘camry’);
+                let vehicleB = new car(‘honda’, ‘civic’);
+                </code> 
+                </pre>
+                When we create objects with a Function Constructor, the __proto__ property of the new object will be an empty object of type car. 
+                </li>
+                <li>
+                    <strong>Creating Objects with Prototypes</strong><br>
+                    JS Engine provides Object.create(obj) to create objects from prototype object and it does it by assigning the prototype of new object to base object. This uses pure prototypical inheritance to create objects.
+
+                <pre>
+                <code> 
+                    var car = {make: “Nissan”, model: “Altima”, displayInfo: function() {console.log('Car with Make: ' + this.make + ' Model: ' + this.model}};
+                    var camry = Object.create(car);
+                    console.log(‘Prototype of new object will be car: ‘ + camry.__proto__); 
+                </code> 
+                </pre>
+                </li>          
+            </ul>
+        </div>
+    </div>
+</div>

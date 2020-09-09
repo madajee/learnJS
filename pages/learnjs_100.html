@@ -1,118 +1,123 @@
-<a href="#!/learnjs/learnjs100" class="nav-link">LearnJS-100</a>
-<div class = "container">
-    <h6>LEARN JS 100</h6>
-    <h3>Hoisting</h3>
-    <p>
-        JS Engine, allocates a memory space for variables and functions in the creation phase, so even if the function is called lexically before it is defined, JS engine won’t throw an error. Hoisting also allocates memory space for the variables, however initial value will be undefined and actual assignment will happen in the execution phase.
-    </p>
-    <pre>
-    <code> 
-        var xHoisting; // x should be undefined
-        console.log('Initial value of x: ' + xHoisting);
-        xHoisting = 3;
+<div class = "container-fluid mt-2">
+    <div class="row">
+        <learnjs-side-menu></learnjs-side-menu>
+        <div class="col-10">
+            <h6 class="text-center">LEARN JS 100</h6>
+            <h3>Hoisting</h3>
+            <p>
+                JS Engine, allocates a memory space for variables and functions in the creation phase, so even if the function is called lexically before it is defined, JS engine won’t throw an error. Hoisting also allocates memory space for the variables, however initial value will be undefined and actual assignment will happen in the execution phase.
+            </p>
+            <pre>
+            <code> 
+                var xHoisting; // x should be undefined
+                console.log('Initial value of x: ' + xHoisting);
+                xHoisting = 3;
+                
+                fHoisting();
+                function fHoisting() {
+                    console.log ('Function is hoisted before it is called');
+                }
+            </code> 
+            </pre>
+            <h3>Scope Chain</h3>
+            <p>
+                Variables are scoped to the execution context of a function, however when JS engine won’t find the variable in the function, it will check for the reference to the outer environment which depends on the where lexically function is defined. So JS Engine goes down the scope chain which ends at the global execution context, and only if the variable is not even defined in the global execution context, JS  Engine will use the hoisted value of undefined. 
+            </p>
+            <pre>
+            <code> 
+            var xScopeVar = 5;
+            console.log ('Variable in Global Scope: ' + xScopeVar );
+            var fScope = function () {
+            var xScopeVar = 4;
+            console.log ('Variable in function Scope: ' + xScopeVar);
         
-        fHoisting();
-        function fHoisting() {
-            console.log ('Function is hoisted before it is called');
-        }
-    </code> 
-    </pre>
-    <h3>Scope Chain</h3>
-    <p>
-        Variables are scoped to the execution context of a function, however when JS engine won’t find the variable in the function, it will check for the reference to the outer environment which depends on the where lexically function is defined. So JS Engine goes down the scope chain which ends at the global execution context, and only if the variable is not even defined in the global execution context, JS  Engine will use the hoisted value of undefined. 
-    </p>
-    <pre>
-    <code> 
-    var xScopeVar = 5;
-    console.log ('Variable in Global Scope: ' + xScopeVar );
-    var fScope = function () {
-    var xScopeVar = 4;
-    console.log ('Variable in function Scope: ' + xScopeVar);
-
-    //Variable Assignment without var in function scope
-    /* Variable will be hoisted in global scope with value of undefined, 
-    though  we are trying to assign in function scope */
-    yScopeVar = 2;
-    console.log ('Trying to create variable in function scope without var keyword: ' + fScope.yScopeVar);
-    console.log ('Variable gets created in global scope: ' + yScopeVar);
-    }
-    fScope();
-    </code> 
-    </pre>
-    <h3>Objects and Arrays JS</h3>
-    <p>
-        Objects in JS are containers that hold properties and methods in the form of name value pairs. Objects can contain other nested objects and can be simply created with {} , and its properties can be accessed with dot operator.
-    </p>
-    <p>
-        Objects in JS are containers that hold properties and methods in the form of name value pairs. Objects can contain other nested objects and can be simply created with {} , and its properties can be accessed with dot operator.
-    </p>
-    <pre>
-    <code> 
-    var arr =  [“hello”, 2, {fname: “john”, lname: “doe” }, true] 
-    </code> 
-    </pre>
-    <h3>Functions are  Objects in  JS</h3>
-    <p>
-        Functions are first class in JS, which means they can be passed around as parameters just like primitive types. But since functions are objects, they are passed by reference and primitive types are passed by value.
-    </p>
-    <p>
-        We can attach properties to functions in the same way as objects, but functions have name & code properties which makes them different from objects. As Name being the optional property, we can use function expression to define anonymous functions. However Code property is invocable, when function is called using the parentheses.
-    </p>
-    <pre>
-    <code> 
-    var logPerson= function () {
-        var fname = person.firstname;
-        var lname = person.lastname; 
-        var name = 'fname' + ' ' + 'lname';
-        console.log ('In Log Name Function: ' + name);
-    }
-    logPerson(); 
-    </code> 
-    </pre>
-    <h3>Immediately Invoked Function Expression (IIFE)</h3>
-    <p>
-        Usually you use an outer parentheses to trick the syntax parser and creates a  function expression within it, which is invoked immediately. An IIFE is used  in lots of frameworks so that the developers don't overwrite the global scope. An example IIFe that will print hello john to the console.
-    </p>
-    <pre>
-    <code> 
-    (function (name) {  var greeting = “hello” ; console.log(greeting + ‘  ‘ + name);}(“John));
-    </code> 
-    </pre>
-    <h3>Closures</h3>
-    <p>
-        As functions are first class in JS, one creates function factories by returning function from the factory function. Though Factory function is completed and popped off the execution stack, JS engine maintains the closure on the variables and closes on them when the returned function is invoked.
-    </p>
-    <pre>
-    <code> 
-    function greetLater () { var greeting = ‘hello’; setTimeout(function(){console.log(greeting);},3000);} 
-    </code> 
-    </pre>
-    <p>
-        In the above function, we pass the anonymous function that logs the greeting but the greeting variable is created in the greetLater function. So when  the timeout function makes a callback after 3 second and logs the greeting,it still has access to the greeting variable even though the greetLater function has completed execution. So in real sense, it is only after closing in all the variables, the reference to parent function is released. 
-    </p>
-    <h3>Call  / Apply / Bind</h3>
-    <p>
-        Bind -  Make a copy of a function with the bind method, and dynamically pass the object as this reference. One can curry functions by making a copy of it with the bind and presetting parameters.
-    </p>
-    <p>
-        Call & Apply -  All functions in JS have call & apply methods which allows you to call a function instead of making a copy of it and works more like an IIFE. One can pass additional parameters in both invocations with call and apply, the difference being that apply passes the params as an array. One can borrow and reuse the functions and build additional logic / features on top of existing functions & objects with the help of apply / call.
-    </p>
-    <h3>Function Borrowing</h3>
-    <pre>
-    <code> 
-    var car = {make: ‘ sedan’, speed: 60, function drive() {console.log (this.make +  ‘drives at’  + this.speed)}}
-    var speedcar = {make: ‘ maclauren’, speed: 100}}
-    car.drive.apply(speedcar);   
-    </code> 
-    </pre>
-    <h3>Function Currying</h3>
-    <pre>
-    <code> 
-    var mul = function (a,b) { return a*b}
-    var mulBy5 = mul.bind(this, 5)
-    Console.log (mul(5,3) ); // should logs 15
-    console.log(mulBy5(3)); // should also log 15
-    </code> 
-    </pre>
+            //Variable Assignment without var in function scope
+            /* Variable will be hoisted in global scope with value of undefined, 
+            though  we are trying to assign in function scope */
+            yScopeVar = 2;
+            console.log ('Trying to create variable in function scope without var keyword: ' + fScope.yScopeVar);
+            console.log ('Variable gets created in global scope: ' + yScopeVar);
+            }
+            fScope();
+            </code> 
+            </pre>
+            <h3>Objects and Arrays JS</h3>
+            <p>
+                Objects in JS are containers that hold properties and methods in the form of name value pairs. Objects can contain other nested objects and can be simply created with {} , and its properties can be accessed with dot operator.
+            </p>
+            <p>
+                Objects in JS are containers that hold properties and methods in the form of name value pairs. Objects can contain other nested objects and can be simply created with {} , and its properties can be accessed with dot operator.
+            </p>
+            <pre>
+            <code> 
+            var arr =  [“hello”, 2, {fname: “john”, lname: “doe” }, true] 
+            </code> 
+            </pre>
+            <h3>Functions are  Objects in  JS</h3>
+            <p>
+                Functions are first class in JS, which means they can be passed around as parameters just like primitive types. But since functions are objects, they are passed by reference and primitive types are passed by value.
+            </p>
+            <p>
+                We can attach properties to functions in the same way as objects, but functions have name & code properties which makes them different from objects. As Name being the optional property, we can use function expression to define anonymous functions. However Code property is invocable, when function is called using the parentheses.
+            </p>
+            <pre>
+            <code> 
+            var logPerson= function () {
+                var fname = person.firstname;
+                var lname = person.lastname; 
+                var name = 'fname' + ' ' + 'lname';
+                console.log ('In Log Name Function: ' + name);
+            }
+            logPerson(); 
+            </code> 
+            </pre>
+            <h3>Immediately Invoked Function Expression (IIFE)</h3>
+            <p>
+                Usually you use an outer parentheses to trick the syntax parser and creates a  function expression within it, which is invoked immediately. An IIFE is used  in lots of frameworks so that the developers don't overwrite the global scope. An example IIFe that will print hello john to the console.
+            </p>
+            <pre>
+            <code> 
+            (function (name) {  var greeting = “hello” ; console.log(greeting + ‘  ‘ + name);}(“John));
+            </code> 
+            </pre>
+            <h3>Closures</h3>
+            <p>
+                As functions are first class in JS, one creates function factories by returning function from the factory function. Though Factory function is completed and popped off the execution stack, JS engine maintains the closure on the variables and closes on them when the returned function is invoked.
+            </p>
+            <pre>
+            <code> 
+            function greetLater () { var greeting = ‘hello’; setTimeout(function(){console.log(greeting);},3000);} 
+            </code> 
+            </pre>
+            <p>
+                In the above function, we pass the anonymous function that logs the greeting but the greeting variable is created in the greetLater function. So when  the timeout function makes a callback after 3 second and logs the greeting,it still has access to the greeting variable even though the greetLater function has completed execution. So in real sense, it is only after closing in all the variables, the reference to parent function is released. 
+            </p>
+            <h3>Call  / Apply / Bind</h3>
+            <p>
+                Bind -  Make a copy of a function with the bind method, and dynamically pass the object as this reference. One can curry functions by making a copy of it with the bind and presetting parameters.
+            </p>
+            <p>
+                Call & Apply -  All functions in JS have call & apply methods which allows you to call a function instead of making a copy of it and works more like an IIFE. One can pass additional parameters in both invocations with call and apply, the difference being that apply passes the params as an array. One can borrow and reuse the functions and build additional logic / features on top of existing functions & objects with the help of apply / call.
+            </p>
+            <h3>Function Borrowing</h3>
+            <pre>
+            <code> 
+            var car = {make: ‘ sedan’, speed: 60, function drive() {console.log (this.make +  ‘drives at’  + this.speed)}}
+            var speedcar = {make: ‘ maclauren’, speed: 100}}
+            car.drive.apply(speedcar);   
+            </code> 
+            </pre>
+            <h3>Function Currying</h3>
+            <pre>
+            <code> 
+            var mul = function (a,b) { return a*b}
+            var mulBy5 = mul.bind(this, 5)
+            Console.log (mul(5,3) ); // should logs 15
+            console.log(mulBy5(3)); // should also log 15
+            </code> 
+            </pre>
+        
+        </div>
+    </div>
 </div>
 

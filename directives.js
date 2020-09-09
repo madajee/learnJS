@@ -7,3 +7,11 @@ app.directive("customHeader", function(){
         replace: true
     }
 });
+
+app.directive("learnjsSideMenu", function(){
+    return {
+        restrict: 'E',
+        templateUrl: 'pages/directives/learnjs-side-menu.html',
+        replace: true
+    }
+});
