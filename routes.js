@@ -3,6 +3,10 @@ app.config(function ($routeProvider) {
    
     $routeProvider
     
+    .when('/', {
+        templateUrl: 'pages/learnjs.html',
+        controller: 'homeController'
+    })
     .when('/learnjs', {
         templateUrl: 'pages/learnjs.html',
         controller: 'learnjsController'

@@ -1,0 +1,24 @@
+  $scope.code = [
+      {snippetName: "hoisting", 
+      snippetCode:"\
+      var xHoisting; // x should be undefined\n\
+      console.log('Initial value of x: ' + xHoisting);\n\
+      xHoisting = 3;\n\
+      fHoisting();\n\
+      function fHoisting() {\n\
+      console.log ('Function is hoisted before it is called');"
+      }
+    ];
+    let insertSnippet = function (code, name) {
+      index = code.findIndex(x => x.snippetName === name);
+      return code[index].snippetCode;
+    }
+    $scope.hoisting = insertSnippet($scope.code, 'hoisting');
+    //console.log ('Hoisting: ' + hoisting);
+
+    <pre>
+<code> 
+<!--{{code[0].snippetCode}}-->
+{{hoisting}}
+</code> 
+</pre>

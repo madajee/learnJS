@@ -1,13 +1,44 @@
+<a href="#!/learnjs/learnjs100" class="nav-link">LearnJS-100</a>
 <div class = "container">
     <h6>LEARN JS 100</h6>
     <h3>Hoisting</h3>
     <p>
         JS Engine, allocates a memory space for variables and functions in the creation phase, so even if the function is called lexically before it is defined, JS engine won’t throw an error. Hoisting also allocates memory space for the variables, however initial value will be undefined and actual assignment will happen in the execution phase.
     </p>
+    <pre>
+    <code> 
+        var xHoisting; // x should be undefined
+        console.log('Initial value of x: ' + xHoisting);
+        xHoisting = 3;
+        
+        fHoisting();
+        function fHoisting() {
+            console.log ('Function is hoisted before it is called');
+        }
+    </code> 
+    </pre>
     <h3>Scope Chain</h3>
     <p>
         Variables are scoped to the execution context of a function, however when JS engine won’t find the variable in the function, it will check for the reference to the outer environment which depends on the where lexically function is defined. So JS Engine goes down the scope chain which ends at the global execution context, and only if the variable is not even defined in the global execution context, JS  Engine will use the hoisted value of undefined. 
     </p>
+    <pre>
+    <code> 
+    var xScopeVar = 5;
+    console.log ('Variable in Global Scope: ' + xScopeVar );
+    var fScope = function () {
+    var xScopeVar = 4;
+    console.log ('Variable in function Scope: ' + xScopeVar);
+
+    //Variable Assignment without var in function scope
+    /* Variable will be hoisted in global scope with value of undefined, 
+    though  we are trying to assign in function scope */
+    yScopeVar = 2;
+    console.log ('Trying to create variable in function scope without var keyword: ' + fScope.yScopeVar);
+    console.log ('Variable gets created in global scope: ' + yScopeVar);
+    }
+    fScope();
+    </code> 
+    </pre>
     <h3>Objects and Arrays JS</h3>
     <p>
         Objects in JS are containers that hold properties and methods in the form of name value pairs. Objects can contain other nested objects and can be simply created with {} , and its properties can be accessed with dot operator.
@@ -27,6 +58,17 @@
     <p>
         We can attach properties to functions in the same way as objects, but functions have name & code properties which makes them different from objects. As Name being the optional property, we can use function expression to define anonymous functions. However Code property is invocable, when function is called using the parentheses.
     </p>
+    <pre>
+    <code> 
+    var logPerson= function () {
+        var fname = person.firstname;
+        var lname = person.lastname; 
+        var name = 'fname' + ' ' + 'lname';
+        console.log ('In Log Name Function: ' + name);
+    }
+    logPerson(); 
+    </code> 
+    </pre>
     <h3>Immediately Invoked Function Expression (IIFE)</h3>
     <p>
         Usually you use an outer parentheses to trick the syntax parser and creates a  function expression within it, which is invoked immediately. An IIFE is used  in lots of frameworks so that the developers don't overwrite the global scope. An example IIFe that will print hello john to the console.
