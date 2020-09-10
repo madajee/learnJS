@@ -21,6 +21,10 @@ app.config(function ($routeProvider) {
         },
         controller: 'learnjsController'
     }).
+    when('/nodejs', {
+        templateUrl: 'pages/nodejs/nodejs_100.html',
+        controller: 'learnjsController'
+    }).
     otherwise('/');
     
 });

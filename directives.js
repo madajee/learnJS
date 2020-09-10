@@ -15,3 +15,11 @@ app.directive("learnjsSideMenu", function(){
         replace: true
     }
 });
+
+app.directive("nodejsSideMenu", function(){
+    return {
+        restrict: 'E',
+        templateUrl: 'pages/directives/nodejs-side-menu.html',
+        replace: true
+    }
+});
