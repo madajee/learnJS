@@ -52,6 +52,78 @@
                 </pre>
                 </li>          
             </ul>
+            <!-- Prototypical Inheritence-->
+            <h3>Prototypical Inheritance</h3>
+            <ul>
+                <li>
+                    Inheritance as a concept is a child object having access to the properties and methods of a parent object.
+                </li>
+                <li>
+                    Javascript implements the concept of inheritance with prototypes and is referred to as prototypical inheritance.
+                </li>
+                <li>
+                    Rather than using a blueprint like class, access modifiers for encapsulation, everything in Javascript is an object, and all objects have __proto__ property which has a reference to another object.
+                </li>
+                <li>
+                    Objects have access to its properties and methods but it also has access to properties and methods in a prototype chain. 
+                </li>
+                <li>
+                    One of the ways we have discussed earlier is to use function constructor to create objects. When we use  ‘new’ keyword, JS Engine creates an empty object, references  the function constructor object as the prototype of the new object. All functions have a prototype object, so the new object will have access to all methods that are on the prototype of the function constructor.
+                </li>
+            </ul>
+            <h3>Object Oriented  Concepts in Javascript</h3>
+            <p>
+                <strong>Classes</strong> are generally the blueprint, and we create objects as instances of classes in other programming languages. Javascript classes, introduced in ECMA2015, is primarily a syntactical sugar over Javascript’s prototype based inheritance.
+            </p>
+            <pre>
+            <code> 
+            class carES6 {
+                constructor(make, model) {
+                    this.make = make;
+                    this.model =  model;
+                }
+                displayCar() {
+                    return ('Car with Make: ' + this.make + ' Model: ' + this.model);
+                }
+            }
+                let vehicleES6 = new carES6('toyota', 'camry');
+                console.log(vehicleES6.displayCar());
+            </code> 
+            </pre>
+            <p>
+                <strong>Encapsulation</strong> One of key OOP concepts is that data can only be accessed with method, and in other programming languages we have access modifiers like public, protected and private to define access on class properties. We can implement the same in Javascript using the let keyword to define the properties of the constructor function and methods within function scope can expose these properties.
+            </p>
+            <pre>
+            <code> 
+            // Encapsulation
+            function PersonEnc(firstname, lastname) {
+                let fname= firstname;
+                let lname= lastname;
+                this.getFullName = function() {
+                return fname + ' ' + lname;
+                }
+            }
+            var johnenc = new PersonEnc('John', 'Doe');
+            console.log('fname and lname can only bbe accessed in getFullName: ' +johnenc.fname);
+            console.log(johnenc.getFullName());
+            </code> 
+            </pre>
+            <!-- References
+            <h3>References</h3>
+            <ul>
+                <li>
+                    <a href="https://www.geeksforgeeks.org/objects-in-javascript/">Geeks For Geeks<a>
+                </li>
+                <li>
+                    <a href="https://learn.devkode.io/">Sunny Puri</a>
+                </li>
+                <li>
+                    <a href="https://www.udemy.com/course/understand-javascript/">Tomy Alicea</a>
+                </li>
+                <li>
+                    <a href="https://www.meetup.com/JavaScriptMeetup/">Javascript Meetup</a>
+                </li>
+            </ul>-->
         </div>
     </div>
 </div>
