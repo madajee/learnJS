@@ -20,9 +20,15 @@ app.config(function ($routeProvider) {
             return 'pages/learnjs_' + param.learnjsid + '.html'
         },
         controller: 'learnjsController'
-    }).
-    when('/nodejs', {
+    })
+    .when('/nodejs', {
         templateUrl: 'pages/nodejs/nodejs_100.html',
+        controller: 'learnjsController'
+    })
+    .when('/nodejs/:nodejsid', {
+        templateUrl: function (param) {
+            return 'pages/nodejs/nodejs_' + param.nodejsid + '.html'
+        },
         controller: 'learnjsController'
     }).
     otherwise('/');

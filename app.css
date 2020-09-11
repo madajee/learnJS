@@ -36,3 +36,13 @@ pre{
   padding-bottom: 20px!ie7;
   max-height: 600px;
 }
+
+.image {
+  background-color: white;
+  border: 1px solid black;
+  margin-bottom: 1em;
+  margin-right: 1em;
+  margin-left: 1em;
+  padding: 1em;
+  width: 80%;
+}

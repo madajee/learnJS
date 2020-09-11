@@ -3,6 +3,186 @@
         <nodejs-side-menu></nodejs-side-menu>
         <div class="col-10">
             <h6 class="text-center">LEARN NodeJS 100</h6>
+            <h3>Some Understanding</h3>
+            <p>
+                We all use browsers, but what we may not have realized, at least I did not until I noticed the integration shift which has been my focus area for many years, is that there is a V8 JS Engine that is embedded into the chrome browser application. Some very smart engineers asked each other that we should take the same JS engine, and make it a server side technology, which as per my understanding is NodeJS.
+            </p>
+            <p>
+                Also smart engineers contributed, many of who are extremely adept at vanilla Javascript programming and others at embedded C++, created a Node ecosystem  by building reusable node modules.
+            </p>
+            <p>
+                Then there are engineers, who have to understand this Node  ecosystem and migrate and build applications by reusing these modules. It is imperative that we keep learning and exploring this stack under the hood, so that we can help each other in projects.
+            </p>
+            <h3>Web - Client Server Architecture</h3>
+            <p>
+                Internet, essentially the World Wide Web is based on Request Response Client Server Architecture. Browser / Mobile Apps sends the request using the HTTP protocol and server responds with status and data. Though there are constraints that make it a scalable design, and I don’t claim to understand them and listing couple of these constraints:
+            </p>
+            <ul>
+                <li>
+                    Uniform Interface (GET, POST, PUT, DELETE)
+                </li>
+                <li>
+                    Client and Server evolve independently
+                </li>
+                <li>
+                    Each interaction between client and server is stateless
+                </li>
+            </ul>
+            <h3>Create and Run a Node App</h3>
+            <ul>
+                <li>
+                    When we install node, we also get a default package manager to manage nodejs packages and modules.
+                </li>
+                <li>
+                    Create a node application with npm init and default index.js file gets created. I usually change that to app.js and run node app.js to learn node.
+                </li>
+            </ul>
+            <pre>
+            <code> 
+                //app.js
+                console.log(‘Hello NodeJS’);
+                > node app.js // should log Hello NodeJS
+            </code> 
+            </pre>
+            <h3>Modules, Exports and  Require</h3>
+            <p>
+                NodeJS, being a server side technology, lets us organize our code and features in modules. Node module system is based on CommonJS module. NodeJS modules use module.exports as the object while CommonJS uses just the exports variable.
+            </p>
+            <pre>
+            <code> 
+                //config.js
+                const dbConfig = {
+                    "DATABASE_URL": "mongodb+srv://uname:pwd@dburl"
+                 }
+                  
+                 module.exports = {
+                    dbConfig: dbConfig
+                 }
+                // app.js
+                var configValues = require('./config');
+                console.log('Hello NodeJS');
+                console.log(configValues.dbConfig.DATABASE_URL);            
+            </code> 
+            </pre>
+            <p>
+                With require, Node performs the following steps:
+                <img class ="image" src="../../images/img-requirejs.jpg" alt="img-requirejs">
+                <ul>
+                    <li>
+                        <strong>Resolution:</strong> Parsing through the file system and qualifying it as a core / installed module(require without /) or user module (require with /), adds the default extension of .js, resolves to index file in folder when module  is not available as a file, and also resolves to modules in node_modules folder.
+                    </li>
+                    <li>
+                        <strong>Loading:</strong> Check the cache and load it as a singleton.
+                    </li>
+                    <li>
+                        <strong>Wrapping:</strong> Wrapping the loaded file as a script in function call.
+            <pre>
+            <code> 
+            function (exports, require, module, __filename, __dirname) {
+                const m = 1;
+                module.exports.m = m;
+                }              
+            </code> 
+            </pre>
+                    </li>
+                    <li>
+                        <strong>Evaluation:</strong>Passing the module code in an execution context of V8 and returning only what we specify in module.exports object.
+                    </li>
+                    <li>
+                        <strong>Caching:</strong>Node refrains from loading the module again and improves performance with caching and also maintains it as singleton, even though we require the module multiple times.
+                    </li>
+                </ul>
+            </p>
+            <h3>Common Ways of Exporting Modules</h3>
+            <p>
+                For the purpose of our discussions, I have created a patternexports object, and assume it module.exports so that we can discuss multiple exporting module pattern in a single file & require call.
+            <pre>
+            <code> 
+            // Creating export object to display differnt ways of exporting modules
+            var patternexports = {
+                message : 'Export Object to display differnt ways of exporting modules'
+            }               
+            </code> 
+            </pre>
+            <ul>
+                <li>
+                    Assign a function to module.exports and invoke the function in a file where you require it.
+                </li>
+                <li>
+                    Define a function constructor and return a new object as a property of module.exports
+                </li>
+                <li>
+                    Create a literal object and return public functions & properties as the properties of the object. This approach is used to implement revealing module patterns in CommonJS.
+                </li>
+            </ul>
+            <pre>
+            <code> 
+            //module-pattern.js
+            // Creating export object to display differnt ways of exporting modules
+            var patternexports = {
+                message : 'Export Object to display differnt ways of exporting modules'
+            }
+            // module-pattern.js: Exporting function with a function definition
+            patternexports.funcPattern =  function() {
+                console.log ('Exporting as a function with funcPattern');
+            }
+                
+            function Person () {
+                this.firstName = 'John';
+                this.lastName = 'Doe';
+            }
+            // Exporting Object created from Function Constructor
+            patternexports.PersonObject = new Person();
+                
+                
+            var privateName = "Ben Thomas";
+            var publicName = 'John Doe';
+            function setNameFn( strName ) {
+                publicName = strName;
+                console.log('With Node Object: ' + publicName);
+            }  
+            function getPrivateNameFn() {
+                return privateName;
+            }
+            patternexports.revealingModule = {
+                setName : setNameFn,
+                getName: getPrivateNameFn
+            }
+            module.exports = patternexports;                           
+            </code> 
+            </pre>
+            <pre>
+            <code> 
+            //app.js
+            // File with require call to module pattern
+            var modulePatterns = require('./module-patterns');
+            // only exporting the function and not the entire module.exports object
+            var onlyFunctionExport = require('./module-patterns').funcPattern;
+            console.log('Hello NodeJS');
+            console.log(configValues.dbConfig.DATABASE_URL);
+                
+            console.log(modulePatterns);
+            modulePatterns.funcPattern();
+            onlyFunctionExport();
+                
+            console.log(modulePatterns.PersonObject);
+                
+            var revealingModule = (function () {
+                var privateVar = "Ben Thomas";
+                function setNameFn( strName ) {
+                    privateVar = strName;
+                    console.log(privateVar);
+                }
+            return {
+                    setName: setNameFn,
+                };
+            })();
+            revealingModule.setName( "Paul Adams" );
+                
+            modulePatterns.revealingModule.setName('Paul Adams');
+            </code> 
+            </pre>
+            </p>
         </div>
     </div>
 </div>
