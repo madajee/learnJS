@@ -31,6 +31,17 @@ app.config(function ($routeProvider) {
         },
         controller: 'learnjsController'
     }).
+    when('/integration', {
+        templateUrl: 'pages/integration/integration_100.html',
+        controller: 'learnjsController'
+    })
+    .when('/integration/:integrationid', {
+        templateUrl: function (param) {
+            return 'pages/integration/integration_' + param.integrationid + '.html'
+        },
+        controller: 'learnjsController'
+    })
+    .
     otherwise('/');
     
 });

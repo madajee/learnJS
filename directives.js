@@ -24,6 +24,14 @@ app.directive("nodejsSideMenu", function(){
     }
 });
 
+app.directive("integrationSideMenu", function(){
+    return {
+        restrict: 'E',
+        templateUrl: 'pages/directives/integration-side-menu.html',
+        replace: true
+    }
+});
+
 app.directive("homeSideMenu", function(){
     return {
         restrict: 'E',
