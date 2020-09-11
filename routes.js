@@ -4,20 +4,20 @@ app.config(function ($routeProvider) {
     $routeProvider
     
     .when('/', {
-        templateUrl: 'pages/learnjs.html',
+        templateUrl: 'pages/home.html',
         controller: 'homeController'
     })
     .when('/learnjs', {
-        templateUrl: 'pages/learnjs.html',
+        templateUrl: 'pages/learnjs/learnjs_100.html',
         controller: 'learnjsController'
     }).
     // when('/learnjs/learnjs100', {
     //     templateUrl: 'pages/learnjs_100.html',
     //     controller: 'learnjsController'
     // }).
-    when('/learnjs/learnjs/:learnjsid', {
+    when('/learnjs/:learnjsid', {
         templateUrl: function (param) {
-            return 'pages/learnjs_' + param.learnjsid + '.html'
+            return 'pages/learnjs/learnjs_' + param.learnjsid + '.html'
         },
         controller: 'learnjsController'
     })

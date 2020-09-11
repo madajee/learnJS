@@ -23,3 +23,11 @@ app.directive("nodejsSideMenu", function(){
         replace: true
     }
 });
+
+app.directive("homeSideMenu", function(){
+    return {
+        restrict: 'E',
+        templateUrl: 'pages/directives/home-side-menu.html',
+        replace: true
+    }
+});
