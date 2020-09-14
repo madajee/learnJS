@@ -8,6 +8,18 @@ app.directive("customHeader", function(){
     }
 });
 
+app.directive("customFooter", function(){
+    return {
+        restrict: 'E',
+        templateUrl: 'pages/directives/custom-footer.html',
+        replace: true,
+        scope:{
+            authorname:"@",
+            linkurl:"@"
+        }
+    }
+});
+
 app.directive("learnjsSideMenu", function(){
     return {
         restrict: 'E',
