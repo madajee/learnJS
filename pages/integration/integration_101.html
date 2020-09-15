@@ -1,0 +1,142 @@
+<div class = "container-fluid mt-2">
+    <div class="row">
+        <integration-side-menu></integration-side-menu>
+        <div class="col-10">
+            <h6 class="text-center">INTEGRATION 101</h6>
+            <h3>Terms that Matter</h3>
+            <ul>
+                <li>
+                    Processing Style: Synchronous, Asynchronous, Batch, Real-time, Poll, Schedule
+                </li>
+                <li>
+                    Messaging: Publish-Subscribe, Queue, Topic, Channel, Broker, Hub-Spoke, Producer, Consumer, Correlation
+                </li>
+                <li>
+                    Service Bus: Router, Mediation, Transform, Mapper, Adapter, Bridge, Composition, Orchestration
+                </li>
+                <li>
+                    Event Driven: Listener, Reactive, Subscription, Filter, Pipe, Splitter
+                </li>
+                <li>
+                    Architecture: SOA, BPM, EAI, ETL, Restful API, Microservices
+                </li>
+                <li>
+                    Protocols and Data: XML, JSON, SOAP, HTTP, JMS, JDBC, AMQP
+                </li>
+            </ul>
+            <h3>Scheduler and Pollers</h3>
+                <h5>How’s and Why’s</h5>
+                <ul>
+                    <li>
+                        How to trigger the integration batches
+                    </li>
+                    <li>
+                        How to process the on FTP server
+                    </li>
+                    <li>
+                        Can we schedule a webservice callout / or API invocation.
+                    </li>
+                    <li>
+                        Should we leverage timers / or event based triggers.
+                    </li>
+                </ul>
+                <h5>Perspectives</h5>
+                <ul>
+                    <li>
+                        I am an Architect, so we should understand a few things:
+                        <ul>
+                            <li>
+                                Processing Duration of a Batch
+                            </li>
+                            <li>
+                                Secure Connection with FTP, File Sizing
+                            </li>
+                            <li>
+                                Data Parsing Requirements
+                            </li>
+                            <li>
+                                Scheduler for direct WS Callout / API invocation is a dangerous thing, and we should propose a trigger components to mediate the call 
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        I am an Developer, so we have to make it work.
+                        <ul>
+                            <li>
+                                What components are available to make a connection to File Server.
+                            </li>
+                            <li>
+                                How I am going to read a record, validate it and transform into a desired Mime / Type.
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        We are a team, so we have to scale it.
+                        <ul>
+                            <li>
+                                We can’t read the same file again.
+                            </li>
+                            <li>
+                                Record processing can fail, and should the failed records be picked in next run.
+                            </li>
+                            <li>
+                                We have to keep hooks for Notification and have coverage for system errors like batch / file hasn’t been picked for an hour / a day.
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <h5>Some Understanding</h5>
+                <ul>
+                    <li>
+                        Inputs from EA group should be the basis for the design approach and development tasks. 
+                    </li>
+                    <li>
+                        Generally, we should strive for separation of record level from File / Batch level.
+                    </li>
+                    <li>
+                        Irrespectively, keep repeating the tasks and we will see the record in the target system.
+                    </li>
+                </ul>
+                <h3>Learn from Open Source</h3>
+                <p>
+                    We all know about Quartz, but generally what we may see in real integration environments are components developed on open source Quartz framework. However we can use quartz-scheduler maven dependencies to better understand and use the components available with product and platforms. 
+                </p>
+                <pre>
+                    <code> 
+                    // maven dependency
+                    &lt;dependency&gt;
+                    &lt;groupId>org.quartz-scheduler&lt;/groupId&gt;
+                    &lt;artifactId>quartz&lt;/artifactId&gt;
+                    &lt;version>2.1.5&lt;/version&gt;
+                    &lt;/dependency>
+                    import org.quartz.Job;
+                    // Our Job class has to implement Quartz Job Interface, and implementation provided in the execute method will be run based on schedule frequency. 
+                    public void execute(JobExecutionContext context)
+                        throws JobExecutionException {
+                        System.out.println("Hello Quartz!");
+                    }
+                    // In the Application we use the Job Builder and Trigger Builder to create job and trigger instance. We get the scheduler instance from factory class and we pass the job and trigger instance to scheduleJob method of scheduler instance.
+                    <a href="https://mkyong.com/java/quartz-2-scheduler-tutorial/" target="_blank">Scheduler Tutorial</a>
+//  Output from Local Prototype Run
+Hello Quartz!
+15:54:24.379 [Timer-0] DEBUG org.quartz.utils.UpdateChecker - Quartz version update check failed: Server returned HTTP response code: 403 for URL: http://www.terracotta.org/kit/reflector?kitID=quartz&pageID=update.properties&id=-1407972861&os-name=Mac+OS+X&jvm-name=Java+HotSpot%28TM%29+64-Bit+Server+VM&jvm-version=1.8.0_131&platform=x86_64&tc-version=2.1.5&tc-product=Quartz&source=Quartz&uptime-secs=6&patch=UNKNOWN
+15:54:27.024 [DefaultQuartzScheduler_QuartzSchedulerThread] DEBUG org.quartz.simpl.PropertySettingJobFactory - Producing instance of Job 'group1.dummyJobName', class=HelloJob
+15:54:27.025 [DefaultQuartzScheduler_QuartzSchedulerThread] DEBUG org.quartz.core.QuartzSchedulerThread - batch acquisition of 1 triggers
+15:54:27.025 [DefaultQuartzScheduler_Worker-4] DEBUG org.quartz.core.JobRunShell - Calling execute on job group1.dummyJobName
+Hello Quartz!
+15:54:32.025 [DefaultQuartzScheduler_QuartzSchedulerThread] DEBUG org.quartz.simpl.PropertySettingJobFactory - Producing instance of Job 'group1.dummyJobName', class=HelloJob
+15:54:32.025 [DefaultQuartzScheduler_QuartzSchedulerThread] DEBUG org.quartz.core.QuartzSchedulerThread - batch acquisition of 1 triggers
+15:54:32.025 [DefaultQuartzScheduler_Worker-5] DEBUG org.quartz.core.JobRunShell - Calling execute on job group1.dummyJobName
+Hello Quartz!
+15:54:37.024 [DefaultQuartzScheduler_QuartzSchedulerThread] DEBUG org.quartz.simpl.PropertySettingJobFactory - Producing instance of Job 'group1.dummyJobName', class=HelloJob
+15:54:37.025 [DefaultQuartzScheduler_QuartzSchedulerThread] DEBUG org.quartz.core.QuartzSchedulerThread - batch acquisition of 1 triggers
+15:54:37.025 [DefaultQuartzScheduler_Worker-6] DEBUG org.quartz.core.JobRunShell - Calling execute on job group1.dummyJobName
+Hello Quartz!
+
+Process finished with exit code 130 (interrupted by signal 2: SIGINT)
+                    </code>                    
+                </pre>
+        </div>
+    </div>
+</div>
+<custom-footer authorname='Jeetan' linkurl='https://www.linkedin.com/in/jeetan-madaan-37aaa113/'></custom-footer>
