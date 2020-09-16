@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="eip-blog-projectFlow" doc:id="727f5a72-a444-4962-bdd2-4cea6b1762b6" >
+		<scheduler doc:name="Scheduler" doc:id="3d0c5921-5422-4ba5-a89b-b6275272a165" >
+			<scheduling-strategy >
+				<fixed-frequency frequency="1" timeUnit="SECONDS" />
+			</scheduling-strategy>
+		</scheduler>
+		<logger level="INFO" doc:name="Logger" doc:id="1670021e-497b-4499-8e14-855b5f4aaab2" message="'Hello Transformer'"/>
+		<!-- <ee:transform doc:name="Transform Message" doc:id="7b863964-b975-41b6-930d-f629dc1f8045" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+var myRead = read("<car><color>red</color></car>",
+                "application/xml")
+output application/json
+-&#45;&#45;
+{
+  mySelection : myRead.car
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform> -->
+		<set-variable value="'Madison Street'" doc:name="Set Variable" doc:id="216fdc0d-74ed-47bf-9cd0-1a040bcb1877" variableName="address"/>
+		<ee:transform doc:name="Transform Message" doc:id="97e2a60d-d107-400e-b2a6-848033903b1b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://input.json", "application/json")]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="3eb2cbcc-88f3-479d-ab07-ae09474bdaa2" message="Raw Input: #[output application/json --- payload]"/>
+		<ee:transform doc:name="Transform Message" doc:id="357b6ce9-7271-4e08-9c82-a19b6684845d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	name: payload.fname ++ ' ' ++ payload.lname,
+	address: vars.address
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="a42c3d7a-1d43-4367-8222-963fa0140efe" message="Transformed Output: #[output application/json --- payload]"/>
+	</flow>
+</mule>
