@@ -91,3 +91,12 @@ ul.timeline > li:before {
   margin-bottom: 5px;
   font-size:15px
 }
+
+@media screen and (max-width: 992px) {
+  .hide-for-mobile{
+    display: none;
+  }
+  footer{
+    display: none;
+  }
+}
