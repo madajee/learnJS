@@ -1,0 +1,184 @@
+<div class = "container-fluid mt-2">
+    <div class="row">
+        <integration-side-menu></integration-side-menu>
+        <div class="col-10">
+            <h6 class="text-center">INTEGRATION 103</h6>
+            <h3>Publish-Subscribe</h3>
+            <p>
+                One of the traditional ways integrating applications has been with exchanging (send and receive) messages to the central enterprise messaging layer. We generally start with simple terms like Queue (Producer / Consumer and mostly FIFO) or Topic (Multiple Subscribers for different tasks), but there are complexities around guaranteed message delivery, acknowledgements, push vs pull, sequencing & ordering in the messaging layer.  
+            </p>
+            <p>
+                Active MQ & JMS based messaging products implement specifications to provide user friendly interfaces to creates these resources like Queues, Destinations, Topics on an Application Server and server has implementations of connection factories & connection pools and integration developers uses adapters to obtain connection to these messaging servers and implement publish / subscribe interfaces.  
+            </p>
+            <p>
+                As protocols matured and open source languages abstracted the complexity, we now have an ecosystem of messaging platforms like RabbitMQ, Kafka that scales with the cloud. 
+            </p>
+            <p>
+                We also see major cloud providers like AWS, Azure use the open source platforms to provide messaging infrastructure with global scale and pay on the go basis. 
+            </p>
+            <h3>How doesPublish-Subscribe help ?</h3>
+            <p>
+                Messaging is an asynchronous enabler for stateless synchronous requests on Http and  users are acknowledged quickly for their actions with a message publisher and subscribers can do the fulfillment, processing and notifications tasks.  
+            </p>
+            <p>
+                Products like Rabbitmq enable configuration driven routing to specific destinations with features like routing-keys.  
+            </p>
+            <p>
+                Platforms like Kafka implement techniques like back-pressure where messages are persisted in order like logs and consumers can playback from a specific point in time.  
+            </p>
+            <p>
+                Messaging has been a way to enable horizontal scaling for a long time, and with cloud enablements you can handle peaks and bursts by creating containers on the fly. 
+            </p>
+            <h3>Abstractions in Rabbitmq</h3>
+            <p>
+                vhost / Virtual host - It is the highest level of abstraction with which you enable authentication, authorization and manage user permissions. It can also be used to manage multiple environments in a single instance.  
+            </p>
+            <p>
+                Rabbitmq server is a broker bootstrapped on an erlang node, and allows publisher and subscriber implementations in different languages to connect with a broker using AMQP wire protocol which uses reliable TCP connection.  
+            </p>
+            <p>
+                When the connection is established, multiple channels can be opened over a single connection for parallel data exchange. Channel is another level of abstraction that has to be created before messages can be published and consumed.  
+            </p>
+            <p>
+                Unlike traditional broker architecture, where there is direct binding between the server and resources like queue / or topic, rabbitmq has exchanges and publishers sends messages to the exchange and depending upon the exchange type, routing keys and bindings, messages are delivered to the subscribers.  
+            </p>
+            <h3>Rabbitmq Publisher - Subscriber Implementation in NodeJS</h3>
+            <p>
+                In LearnJS-102, we have used node modules like axios and array functions implementations from underscore library to filter some todo records. We are going to piggy-back on that example.  
+            </p>
+            <p>
+                We are going to use docker image to create a rabbit-mq container and have the server listen on default port 5672.  
+            </p>
+            <pre>
+                <code>
+                //Start Rabbitmq as a container service with docker
+                docker run --name rabbitmq -p 5672:5672 rabbitmq
+                2020-09-21 09:01:59.699 [info] <0.44.0> Application rabbitmq_prometheus started on node rabbit@7cbd3bdbcb4d
+                    2020-09-21 09:01:59.712 [info] <0.831.0> started TCP listener on [::]:5672
+                    2020-09-21 09:02:00.279 [info] <0.680.0> Server startup complete; 3 plugins started.
+                     * rabbitmq_prometheus
+                     * rabbitmq_web_dispatch
+                     * rabbitmq_management_agent
+                     completed with 3 plugins.
+                    2020-09-21 09:02:00.279 [info] <0.680.0> Resetting node maintenance status
+                    2020-09-21 09:02:42.318 [info] <0.876.0> accepting AMQP connection <0.876.0> (172.17.0.1:58256 -> 172.17.0.2:5672)
+                    2020-09-21 09:02:42.338 [info] <0.876.0> connection <0.876.0> (172.17.0.1:58256 -> 172.17.0.2:5672): user 'guest' authenticated and granted access to vhost '/'
+                    2020-09-21 09:02:47.141 [info] <0.897.0> accepting AMQP connection <0.897.0> (172.17.0.1:58258 -> 172.17.0.2:5672)
+                    2020-09-21 09:02:47.148 [info] <0.900.0> accepting AMQP connection <0.900.0> (172.17.0.1:58260 -> 172.17.0.2:5672)
+                    
+                </code>                    
+            </pre>
+            <p>
+                In both publisher and subscriber we will use amqlip node module to connect to the rabbitmq container service, create a channel and todos queue  
+            </p>
+            <p>
+                In consumer service we will consume the message from the todos queue, acknowledge the message, so that it gets removed from the queue.  
+            </p>
+            <pre>
+                <code>
+                //consumer.js
+                const amqp = require('amqplib');
+
+                connect();
+                async function connect() {
+                    try {
+                        const connection = await amqp.connect("amqp://localhost:5672");
+                        const channel = await connection.createChannel();
+                        const result  = await channel.assertQueue("todos");
+                        channel.consume("todos", message => {
+                            const input = JSON.parse(message.content.toString());
+                            console.log(`Received todo with input ${JSON.stringify(input)}`);
+                            channel.ack(message);
+                        });
+                        console.log("Waiting for messages...");
+                    }
+                    catch (ex) {
+                        console.error(ex);
+                    }
+                }
+                </code>                    
+            </pre>
+            <p>
+                In publisher service, we will iterate over the todos and publish each of them into the todos queue.  
+            </p>
+            <pre>
+                <code>
+                //consumer.js
+                const amqp = require('amqplib');
+                const axios = require('axios');
+                const _ = require('underscore');
+                
+                function todosList(todos) {
+                    let arr = Object.values(todos);
+                    return arr;
+                }
+                
+                axios.get('https://jsonplaceholder.typicode.com/todos')
+                .then((response) => {
+                    let todosArrUnderscore = todosList(response.data);
+                    const unCompletedTodos = _.filter(todosArrUnderscore, element => element.userId == 5 && element.id > 98);
+                    const completedTodos = _.map(unCompletedTodos, element => {connect(element); return element;});
+                    console.log("----------- Published Todos -------------");
+                    console.log(completedTodos);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+                
+                
+                async function connect(userdata) {
+                    try {
+                        const connection = await amqp.connect("amqp://localhost:5672");
+                        const channel = await connection.createChannel();
+                        const result  = await channel.assertQueue("todos");
+                        channel.sendToQueue("todos", Buffer.from(JSON.stringify(userdata)) );
+                        console.log(`Todos sent successfully ${JSON.stringify(userdata)}`);
+                    }
+                    catch (ex) {
+                        console.error(ex);
+                    }
+                }
+                </code>                    
+            </pre>
+            <p>
+                We will start the consumer service with npm run consume in the terminal window, and wait for messages.  
+            </p>
+            <pre>
+                <code>
+                //consumer terminal window
+                npm run consume
+ 
+                > rabbitmqapp@1.0.0 consume /Users/home/LearnGame/dirGithubio/learnJS/integration-103
+                > node consumer.js
+                 
+                Waiting for messages...
+                Received todo with input {"userId":5,"id":100,"title":"excepturi a et neque qui expedita vel voluptate","completed":false}
+                Received todo with input {"userId":5,"id":99,"title":"neque voluptates ratione","completed":false}                
+                </code>                    
+            </pre>
+            <p>
+                We will start the publisher service with npm run publish filtered todos with id = [99, 100].  
+            </p>
+            <pre>
+                <code>
+                //publisher terminal window
+                > rabbitmqapp@1.0.0 publish /Users/home/LearnGame/dirGithubio/learnJS/integration-103
+                > node publisher.js
+                 
+                ----------- Published Todos -------------
+                [ { userId: 5,
+                    id: 99,
+                    title: 'neque voluptates ratione',
+                    completed: false },
+                  { userId: 5,
+                    id: 100,
+                    title: 'excepturi a et neque qui expedita vel voluptate',
+                    completed: false } ]
+                Todos sent successfully {"userId":5,"id":100,"title":"excepturi a et neque qui expedita vel voluptate","completed":false}
+                Todos sent successfully {"userId":5,"id":99,"title":"neque voluptates ratione","completed":false}                
+                </code>                    
+            </pre>
+        </div>
+    </div>
+</div>
+<custom-footer authorname='Jeetan' linkurl='https://www.linkedin.com/in/jeetan-madaan-37aaa113/'></custom-footer>
