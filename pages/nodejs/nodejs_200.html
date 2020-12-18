@@ -3,6 +3,121 @@
         <nodejs-side-menu></nodejs-side-menu>
         <div class="col-md-10">
             <h6 class="text-center">LEARN NodeJS 200</h6>
+            <h3>Preface</h3>
+            <p>
+                As I continue on my learnings with Javascript, Angular and NodeJS courses on Udemy and MongoDB courses on MongoDB University, Though I am not a traditional Javascript developer, I have started to get some handle on MEAN stack with M220JS (Learn the essentials of Node.js application development with MongoDB). I am attempting to detail out the steps and process that we can leverage when delivering on Full Stack projects.
+            </p>
+            <h3>Setting up the application with MEAN</h3>
+            <p>
+                Let’s start by creating a Node app that will create an express server, connect with mongodb with node driver. We will create DAO against collections of mflix sample DB and use the jest framework to test the functions in DAO classes. We will add following dependecies to bootstrap the API server with NodeJS and MongoDB. <br>
+                <strong>"dependencies": { "body-parser": "^1.19.0", "cors": "^2.8.5","dotenv": "^8.2.0", "express": "^4.17.1", "jest-runner": "^26.6.3", "mongodb": "^3.6.3", "morgan": "^1.10.0", "nodemon": "^2.0.6" }</strong>
+            </p>
+            <p>
+                We will also have to add babel as dev dependencies so that we can use ES6 features in our node environment. We need to add .babelrc to the project to enable babel plugins. We will have to add .env file with configuration properties for MongoDB cluster and mFlix database. We will also add the property for port where express server can listen for incoming requests. We will add .jest.config.js to create global variables like mflixClient and mflixDB that will be handle to the DB Cluster and database and tear down these handles after the test run.
+            </p>
+            <h3>Creating the Express Server, connecting to database and serving the home page of angular client
+            </h3>
+            <ul>
+                <li>
+                    In the node app main file, we will register the babel plugin, load the environment with connection properties using the dotenv config method.
+                </li>
+                <pre>
+                    <code> 
+                        require("@babel/register")
+                        require("dotenv").config()
+                        exports = module.exports = require("./appserver")
+                    </code> 
+                </pre>
+                <li>
+                    We will then use MongoClient from mongodb driver and establish connection to the database.
+                </li>
+                <pre>
+                    <code> 
+                        import { MongoClient } from "mongodb"
+                        MongoClient.connect(process.env.MFLIX_DB_URI, { useNewUrlParser: true }).catch(err => {console.error(err.stack)
+                            process.exit(1)
+                        })
+                        .then (async client => { console.log(`Start the express server`)})
+                    </code> 
+                </pre>
+                <li>
+                    We will create an express app, enable express middlewares like cors, bodyparser and serve the index file from the app folder which will bootstrap the angularJS application.
+                </li>
+                <pre>
+                    <code> 
+                        import express from "express"
+                        import bodyParser from "body-parser"
+                        import cors from "cors"
+                        import morgan from "morgan"
+
+                        const app = express()
+
+                        app.use(cors())
+                        process.env.NODE_ENV !== "prod" && app.use(morgan("dev"))
+                        app.use(bodyParser.json())
+                        app.use(bodyParser.urlencoded({ extended: true }))
+                        app.use("/", express.static("app"))
+                        app.use("*", (req, res) => res.status(404).json({ error: "not found" }))
+                        export default app
+                    </code> 
+                </pre>
+                <li>
+                    In the angularJS client, we will load angularJS, Bootstrap4 and create a single page angular app with ngRoute dependency. We can use directives to create reusable UI components. One such component can be header that can be used in templates served with different routes.
+                </li>
+                <pre>
+                    <code> 
+                        ***************index.html******************
+                        bootstrap.min.css from maxcdn.bootstrapcdn.com
+                        angularjs/1.8.0 from ajax.googleapis.com
+                        angularjs/1.6.9/angular-route from ajax.googleapis.com
+                        ***************app.js******************
+                        var app = angular.module('app', ['ngRoute',]);
+                        ***************controller.js******************
+                        app.controller('homeController', ['$scope', function($scope) {
+                        }]);
+                        
+                        app.controller('aboutController', ['$scope',
+                          function($scope) {
+                        }]);
+                        
+                    </code> 
+                </pre>
+                <pre>
+                    <code>
+                        ***************routes.js******************
+                        // ROUTES
+                        app.config(function ($routeProvider) {
+                        
+                            $routeProvider
+                            
+                            .when('/', {
+                                templateUrl: 'pages/home.html',
+                                controller: 'homeController'
+                            })
+                            .when('/about', {
+                                templateUrl: 'pages/about.html',
+                                controller: 'aboutController'
+                            }).
+                            otherwise('/');
+                            
+                        });
+                        ***************directives.js******************
+                        // DIRECTIVES - From Jeetan Madaan
+                        app.directive("customHeader", function(){
+                            return {
+                                restrict: 'E',
+                                templateUrl: 'pages/directives/custom-header.html',
+                                replace: true
+                            }
+                        }); 
+                    </code>
+                </pre>
+            </ul>
+            <h3>MONGO DB</h3>
+            <p>
+                We will now have develop the DAO layer as a facade to the collections in the mflix and enable TDD with Jest Test Suites and Test Cases, but we may also need overview of MongoDB so let's follow this another writeup.<br><a href="#!/nodejs/300" class="nav-link">MONGODB-100</a>
+                We will close this blog here for the time being, and maybe pick this continuation with a link from MONGODB-100. 
+            </p>
         </div>
     </div>
 </div>
