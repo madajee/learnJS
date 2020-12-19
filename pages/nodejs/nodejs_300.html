@@ -3,12 +3,80 @@
         <nodejs-side-menu></nodejs-side-menu>
         <div class="col-md-10">
             <h6 class="text-center">LEARN NodeJS 300 (MONGODB 100)</h6>
-            <h3>MONGODB</h3>
+            <h3>MONGO DB - A brief context</h3>
             <p>
-                MONGODB
+                Relational Databases with its three decades of legacy, have provided robust monolith applications. MongoDB on the other hand, has created no-sql DB engine that allow you to work with your data anyway you want, scale in & scale out with your workloads and run it anywhere by deploying on a single node or on different clouds. MongoDB is a document based DB engine that provides drivers in languages like Python, Javascript, Ruby, Java and allows you to quickly build modern applications. It enables schemaless design that enables speed, ease of development and cloud scale with Atlas offering.
             </p>
-           
+            <h3>Architecture</h3>
+            <ul>
+                <li>
+                    mongod is a daemon, a core runtime process of MongoDB designed with architectural layers of MQL, Document Data Model and Storage Layer, that accepts connection requests and persist data to the hard drives.
+                </li>
+                <li>
+                    MongoDB Query Language (MQL) - Data & operations send by client drivers in the form of BSON messages are translated to mongoDB  instructions by this layer. It provides different operators & aggregation engine to support CRUD activities.
+                </li>
+                <li>
+                    MongoDB Document Data Model - This layer is responsible for applying the CRUD operations in a distributed replicas & its data structures by handling requirements related to replication, durability.
+                </li>
+                <li>
+                    Storage Layer -  This layer handles the disk level system calls on a single node while also  providing things like compression, encryption. Wired Tiger is a default storage engine for MongoDB.
+                </li>
+                <li>
+                    Security & Admin are traversal layers for user management & database admin activities.
+                </li>
+                <li>
+                    MongoDB is a distributed DBMS and supports high availability & automatic failover with a replication mechanism between primary  & secondary nodes in a replica set. MongoDB manages scalability needs with mongos managing shards of replica sets.
+                </li>
+            </ul>
+            <h3>Documents & Data Structures</h3>
+            <p>
+                Data in mongoDB is stored in a hierarchical structure with database at the top level with one of more collections. Then there are documents in the collections and multiple documents represent your data set. MongoDB stores JSON documents as binary representation of JSON (BSON). Drivers for different languages returns documents in JSON format and responsible for translation from BSON to JSON format.
+            </p>
+            <h4>CRUD Operations</h4>
+            <ul>
+                <li>
+                    Create new documents in a collection.
+                    db.users.insertOne({name:"sue", age: 26, status: "pending"})
+                </li>
+                <li>
+                    Retrieve documents in a collection with query filters.
+                    db.users.find({age: {$gt: 18}})
+                </li>
+                <li>
+                    Modify existing documents in a collection. 
+                    db.users.updateMany({age: {$lt: 18}}, {$set: { status: "reject"}})
+                </li>
+                <li>
+                    Remove documents from a collection.
+                    db.users.deleteMany({status: "reject"})
+                </li>
+            </ul>
+            <h3>Aggregation Framework</h3>
+            <p>
+                Modeled on the concept of data processing pipelines, pipelines are composition of several stages that operate on documents and filter & transforms them into aggregated results.
+
+                Syntax:
+                db.userColl.aggregate([{stage1}, {stage2}, {stage3}], {options}) 
+            </p>
+            <h3>Replication</h3>
+            <p>
+                Replication provides redundancy and increases data availability.With multiple copies of data on a different server, replication provides level of fault tolerance against the loss of single database server. A replica set in MongoDB is a group of mongod processes that maintain the same data set. MongoDB uses statement based replication mechanism, a process by which DB operations are translated to idempotent op log entries in the primary node which are then used by secondary for replicating data.
+            </p>
+            <h3>Sharding</h3>
+            <p>
+                Database growth can be supported by either vertical scaling or horizontal scaling. Vertical scaling resorts to approach of increasing CPU on a single node, whereas horizontal scaling is an approach of splitting data across multiple nodes. 
+                Sharding is a method of dividing data across multiple replicas based on a shard key. MongoDB implements sharding by routing queries through the mongos and storing metadata and configuration settings in Config Servers. 
+                It is quite important to pick a good shard key based on the cardinality [High], frequency [Low], monotonic change [Avoid]. In some cases, it may be beneficial to use the hashed shard key but then you loose the ability to target a range query and mongos will always perform scatter gather query.
+            </p>
+            <h3>Storage</h3>
+            <p>
+                Storage Engine is a component that manages how data is stored to the disk. Wired Tiger is the default storage engine for MongoDB but there are other options like In-Memory, MMAPv1. WiredTiger supports atomicity at a document level during the write operations and creates checkpoint after writing snapshot data to the disk. MongoDB can recover from a last checkpoint in case of failure writing the new checkpoint and can refer to journal to replay all the data between the checkpoints. With WiredTiger MongoDB supports compression for all collections and indexes.
+            </p>
+            <h3>Mongo DB DAO Layer with NodeJS</h3>
+            <p>
+               In previous blog,<a href="#!/nodejs/300" class="nav-link">NODEJS-200</a> we were learning to develop the MEAN application, and now that we have brief context on MongoDB, we will continue our learnings with <a href="#!/nodejs/400" class="nav-link">NODEJS-400 (DAO and API development on MEAN stack)</a>.
+            </p>
         </div>
     </div>
 </div>
-<custom-footer authorname='John Doe' linkurl='https://www.linkedin.com/in/jeetan-madaan-37aaa113/'></custom-footer>
+<custom-footer authorname='Jeetan Madaan' linkurl='https://www.linkedin.com/in/jeetan-madaan-37aaa113/'></custom-footer>
