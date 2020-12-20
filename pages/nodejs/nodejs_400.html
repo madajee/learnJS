@@ -3,10 +3,151 @@
         <nodejs-side-menu></nodejs-side-menu>
         <div class="col-md-10">
             <h6 class="text-center">LEARN NodeJS 400</h6>
-            <h3>Some Understanding</h3>
+            <h3>Backend DAOs with Mongo Collections</h3>
             <p>
-                We all use browsers, but what we may not have realized, at least I did not until I noticed the integration shift which has been my focus area for many years, is that there is a V8 JS Engine that is embedded into the chrome browser application. Some very smart engineers asked each other that we should take the same JS engine, and make it a server side technology, which as per my understanding is NodeJS.
+                Now that we have the setup the MEAN application, which means we have created a database on MongoDB server like mflix and modeled couple of collections like movies, users. We also have a node server with expresss application that connects to the mongodb database and serving a static index page which bootstraps a single page angular application. It can some other application like React in which case it will be MERN application. We have now focus on building the DAO and testing them with testing framework like Jest.
             </p>
+            <h3>Reads in CRUDs</h3>
+            <p>
+                Mongo DB drivers provides methods like findone(), find() on collection handle and takes query predicates to returns a cursor which is an ietrable to the returned document set which is similar to resultset returned from ORM frameworks when query methods are called against relational databases. We can implement a getMoviesByCountry method in moviesDAO to read the list of movies that are filtered based on the countries.
+            </p>
+            <pre>
+                <code> 
+                    static async getMoviesByCountry(countries) {
+                        let cursor
+                        try {
+                            cursor = await movies.find(
+                                {countries: {$in: countries}},
+                                { projection: { title: 1} },
+                              )
+                            } catch (e) {
+                              console.error(`Unable to issue find command, ${e}`)
+                              return []
+                            }
+                        
+                            return cursor.toArray()
+                          }                        
+
+                </code> 
+            </pre>
+            <p>
+                Let's write a test case to return the movie list for the Kosovo country. 
+            </p>
+            <pre>
+                <code> 
+                    test("Can perform a country search for one country", async () => {
+                        const kosovoList = ["Kosovo"]
+                        const movies = await MoviesDAO.getMoviesByCountry(kosovoList)
+                        expect(movies.length).toEqual(2)
+                      })
+                </code> 
+            </pre>
+            <p>
+                Mongo Query language has operators like $eq, $all which can used in filters. We can also use projection feature to only return the subset of fields in a document.
+            </p>
+            <h3>Writes in CRUDs</h3>
+            <p>
+                Mongo DB drivers provides methods like insertOne(), insertMany() and insert() on collection handle to create mongo documents in a collection. We can implement a addUser method in userDAO to create a user in a users collection.
+
+                Mongo DB drivers also provides methods like updateOne(), updateMany() and update() which takes query predicate as input to filter the records and use operators like $set, $unset to update the fields in the record set. <br>
+                When we pass upsert flag as true in the update operation, the record is created if it is not there in the collection. We can update user preferences by implementing updatePreferences() in userDAO.
+            </p>
+            <pre>
+                <code> 
+                    static async updatePreferences(email, preferences) {
+                        try {
+                            preferences = preferences || {}
+                            const updateResponse = await users.updateOne(
+                            { email: email },
+                            { $set: { preferences: preferences } },
+                        )
+
+                        if (updateResponse.matchedCount === 0) {
+                            return { error: "No user found with that email" }
+                        }
+                        return updateResponse
+                        } catch (e) {
+                        console.error(
+                            `An error occurred while updating this user's preferences, ${e}`,
+                        )
+                        return { error: e }
+                        }
+                    }
+                </code> 
+            </pre>
+            <p>
+                Let's write a test case to update user preferences for an existing test user with an email of  "foobaz@bar.com". Test Suite will use addUser in beforeAll() and deleteUser method and afterAll() lifecycle methods to avoid creating any users in the test runs.
+            </p>
+            <pre>
+                <code> 
+                    test("Valid preferences are reflected in DB", async () => {
+                        const testUser = {
+                            name: "foo",
+                            email: "foobaz@bar.com",
+                            password: "foobar",
+                          }
+                    
+                        // first set of preferences
+                        const preferences = {
+                          favorite_cast_member: "Goldie Hawn",
+                          favorite_genre: "Comedy",
+                          preferred_ratings: ["G", "PG", "PG-13"],
+                        }
+                    
+                        let updateResult = await UsersDAO.updatePreferences(
+                          testUser.email,
+                          preferences,
+                        )
+                        expect(updateResult.matchedCount).toBe(1)
+                        expect(updateResult.modifiedCount).toBe(1)
+                    })
+                </code> 
+            </pre>
+            <h3>Delete in CRUDs</h3>
+            <p>
+                Mongo DB drivers provides methods like deleteOne(), deleteMany() on collection handle to delete documents in a collection. We can implement a deleteComment method in commentDAO so that user can delete their own comments but not anyone else's comment.
+            </p>
+            <pre>
+                <code> 
+                    static async deleteComment(commentId, userEmail) {
+                        try {
+                            const deleteResponse = await comments.deleteOne({
+                                _id: ObjectId(commentId),
+                                email: userEmail
+                              })
+
+                              return deleteResponse
+                            } catch (e) {
+                              console.error(`Unable to delete comment: ${e}`)
+                              return { error: e }
+                            }
+                          }
+                </code> 
+            </pre>
+            <p>
+                Let's write a test case to delete a comment for an existing user. Test Suite will use addUser and addComment in beforeAll() and deleteUser method and afterAll() lifecycle methods to avoid creating any users in the test runs.
+            </p>
+            <pre>
+                <code> 
+                    test("Can delete a comment if email matches", async () => 
+                    {
+
+                        const testUser = {
+                            name: "foobar",
+                            email: "foobar@baz.com",
+                          }
+                        let comment = {
+                            text: "fe-fi-fo-fum",
+                            id: "",
+                          }
+                        const deleteCommentResult = await CommentsDAO.deleteComment(
+                          comment.id,
+                          testUser.email,
+                        )
+                        expect(deleteCommentResult.deletedCount).toBe(1)
+                      })
+                </code> 
+            </pre>
         </div>
     </div>
 </div>
