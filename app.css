@@ -100,3 +100,5 @@ ul.timeline > li:before {
     display: none;
   }
 }
+
+ul.space_list li { margin-bottom: 1em; }

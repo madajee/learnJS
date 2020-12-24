@@ -1,0 +1,31 @@
+<div class = "container-fluid mt-2">
+    <div class="row">
+        <integration-side-menu></integration-side-menu>
+        <div class="col-md-10">
+            <h6 class="text-center">INTEGRATION 104</h6>
+            <h3>Enterprise Integration Patterns</h3>
+            <p>
+                <a href="https://en.wikipedia.org/wiki/Enterprise_Integration_Patterns" target="_blank">Gregor Hohpe and Bobby Woolf</a>, many years ago, probably in 2004, wrote a book that documented 65 integration patterns so that IT industry can address integration challenges in a consistent way. I think the mindset of the authors to teach us that we should address integration challenges by designing solutions that make systems talk and respond like the way we do it in real world. Though the book specifies the four integration styles of File Transfer, Shared Database, Remote Procedure Invocation, Messaging but the focus has been on Messaging style that enables asynchronous behavior in the system design. So let's understand what makes a messaging system.
+            </p>
+            <h3>Messaging System</h3>
+            <ul class=space_list>
+                <li>
+                    <a href="https://www.enterpriseintegrationpatterns.com/patterns/messaging/Message.html" target="_blank">Message</a> is piece of information mostly a data record that has to be transmitted from sender to receiver. But we need to understand that there are other parts of a message along with data that varies based on the implementation of messaging systems and standards. For eg: SOAP messages have envelopes, JMS messages have headers, Mule messages have attributes.
+                </li>
+                <li>
+                    <a href="https://www.enterpriseintegrationpatterns.com/patterns/messaging/Message.html" target="_blank">Message Channel</a> is about how the message is transmitted from sender to receiver in a messaging system. For example in simple terms queue is a point to point channel whereas topic is a publish-subscribe channel.
+                </li>
+                <li>
+                    <a href="https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageEndpoint.html" target="_blank">Message Endpoint</a> is about how the data is received from source and also about how the data is sent to the target. Messgaging systems are designed to connect distributed applications and generally application interface layer has its own protocols, drivers, formats so message system implments different endpoints and connectors to interface with different applications. For eg: File Endpoint, JMS / AMQP endpoint, database adapter / connector, SAP connector etc. Many products and platforms are preferred one over the other based on the availability of these endpoint implementations.  
+                </li>
+                <li>
+                    Routers
+                </li>
+                <li>
+                    Transformers, Filters and Pipes
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<custom-footer authorname='Jeetan' linkurl='https://www.linkedin.com/in/jeetan-madaan-37aaa113/'></custom-footer>
