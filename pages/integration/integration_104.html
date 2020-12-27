@@ -19,12 +19,31 @@
                     <a href="https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageEndpoint.html" target="_blank">Message Endpoint</a> is about how the data is received from source and also about how the data is sent to the target. Messgaging systems are designed to connect distributed applications and generally application interface layer has its own protocols, drivers, formats so message system implments different endpoints and connectors to interface with different applications. For eg: File Endpoint, JMS / AMQP endpoint, database adapter / connector, SAP connector etc. Many products and platforms are preferred one over the other based on the availability of these endpoint implementations.  
                 </li>
                 <li>
-                    Routers
+                    <a href="https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageRoutingIntro.html" target="_blank">Message Routers</a> is about pushing messages to different outbound channels. Let's say shipping message has to be routed to multiple warehouses, so one can use the warehouse code to route the message to different warehouses. Similarly there are other routing patterns like splitter, aggregator, resequencer that helps with complex scenarios where multiple messages have to routed appropriately.
                 </li>
                 <li>
-                    Transformers, Filters and Pipes
+                    <a href="https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageRoutingIntro.html" target="_blank">Message Pipes and Filters</a> is about creating solutions by composing multiple filters when ouput of one filter is piped as input to next filter. We also have terminal and non-terminal operators which are generally higher order reusable functions that enable rapid implmentation of solutions. 
+                </li>
+                <li>
+                    <a href="https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageRoutingIntro.html" target="_blank">Message Transformations</a> allows to manage different formats across endpoints and components in a messaging system, and modern integration platforms have a normalization engine to create a common format. Developers can then leverage the features of normalization language to create powerful tranformations that are usually becomes the core of custom integration solutions in an enterprise landscape. 
                 </li>
             </ul>
+            <h3>Apache Camel</h3>
+            <p>
+                A simple Camel route that triggers from a timer and calls a bean and prints to system out.
+            </p>
+            <pre>
+                <code>
+                    public void configure() {
+                        from("timer:hello?period={{timer.period}}").routeId("hello")
+                            .transform().method("myBean", "saySomething")
+                            .filter(simple("${body} contains 'foo'"))
+                                .to("log:foo")
+                            .end()
+                            .to("stream:out");
+                    }              
+                </code>                    
+            </pre>
         </div>
     </div>
 </div>
