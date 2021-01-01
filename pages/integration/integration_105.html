@@ -1,0 +1,110 @@
+<div class = "container-fluid mt-2">
+    <div class="row">
+        <integration-side-menu></integration-side-menu>
+        <div class="col-md-10">
+            <h6 class="text-center">INTEGRATION 105</h6>
+            <h3>Modern Enterprise Integration</h3>
+            <p>We all know that monolith application landscape has to transform to microservices enterprise, but tranformation challenges and journey is different for many enterprises. As the transformation programs create mordern enterprises, integration platforms have also evoloved from server based deployments to worker enabled deployments. Let's just try to understand some of the nuances with deployment strategies for Mule applications on Anypoint Platform</p>
+            <h3>Server Model</h3>
+            <p>In a server based deployment model, several mule applications deploys on a mule server with a mule runtime and shared resources are managed in a domain project.</p>
+            <h3>Worker Model</h3>
+            <p>In a worker based deployment model, each mule application is converted to a immutable container image that will be deployed as an Kubernetes POD which means mule runtime is part of application resources and not really installed along with provisioning of the cloud resources which was the needed with worker model.</p>
+            <h3>Container Model</h3>
+            <p>In a container based deployment model, each mule application is an independent deployment with its runtime and resources.</p>
+            <h3>Deployment Models on Anypoint Platform</h3>
+            <p>Anypoint Platform has a Management Plane and Runtime Plane.</p>
+            <ul class=space_list>
+                <li>
+                    CloudHub Only - Both runtime and management plane is in the cloud
+                </li>
+                <li>
+                    Customer Hosted - Runtime Plane in on-premise and management plane is in the cloud
+                </li>
+                <li>
+                    Hybrid - Runtime plane is both on-premise and cloud. Management plane in the cloud.
+                </li>
+                <li>
+                    Private Cloud - Both runtime and management plane is on-premise.
+                </li>
+
+            </ul>
+            <h3>Server Based to Worker Based Deployments</h3>
+           <ul class=space_list>
+               <li>
+                   Assessment / Discovery phase is about understanding the integration landspace, business process and integration scenarios, discovering and design analysis on existing mule artifacts and infrastructure.
+                   <ul>
+                       <li>
+                           Do we have domain project?
+                       </li>
+                       <li>
+                            Domain specific and App specific environment properties.
+                        </li>
+                        <li>
+                            CI/CD Pipeline
+                        </li>
+                        <li>
+                            Reusable Services and Code
+                        </li>
+                        <li>
+                            Test Strategies and Test Plans
+                        </li>
+                        <li>
+                            HA and Scaling Requirements
+                        </li>
+                   </ul> 
+               </li>
+               <li>
+                    Planning phase can then focus on following aspects:
+                    <ul>
+                        <li>
+                            Domain projects are not supported in worker model and dependencies are managed in a worker.
+                        </li>
+                        <li>
+                            Environment properties are managed as config properties in the platform.
+                        </li>
+                        <li>
+                            Scalinp up and Scaling out worker apps are based on design and configurations of the platform. In Cloudhub, mule apps can scale up from 1vCore, 2vCore, 4vCore, 8vCore and 16vCore. We can also scale out from 1 to 8 workers.
+                        </li>
+                        <li>
+                            High Availability and Disaster Recovery can be enabled by supporting deployments in multiple regions and different availability zones.
+                        </li>
+                        <li>
+                            Sizing in server model is managed with high performance CPU and huge RAM whereas in worker model, each worker app has its own vCores and RAM.
+                        </li>
+                        <li>
+                           Policies in worker model are enabled with gateway product of the platform.
+                        </li>
+                    </ul>
+               </li>
+               <li>
+                  Platform Setup [VPC, vCores, Load Balancers, Static IPs]
+                  Anypoint Org location in master and not in business group.
+                  CIDR Block (Expected Applications * 10)
+                  Use the AWS region that is closest to the customer datacenter.
+                  Shared Worker Cloud [DNS as http://appname.cloudhub.io]
+                  DataCenter Apps to AWS VPC [IPSec / AWS Peering / Direct Connect]
+                  Use DLB for custom domain name
+               </li>
+               <li>
+                  Iterate: MULE 3 [Migrate, Refactor, Redesign] 
+                </li>
+                <li>
+                  Iterate: MULE 4 [APIs, Endpoints, Event Driven Apps, Batch Apps] 
+                </li>
+                <li>
+                  Pilot Phase with Hybrid Deployment Model. Anypoint Platform is offering Runtime Fabric that helps mule customers ease the pain in migration and integration projects. 
+                </li>
+                <li>
+                  Multiple Waves and releases to create an enterprise ecosystem that fosters seamless deployments and help you achieve benefits of tranforming towards microservices architecture.     
+                </li>
+           </ul>
+           <h3>Deployments of Layered Mule and Java Monolith Application with all components on same Mule Runtime</h3>
+           <p>In a server based deployment model, we create a domain project to manage the dependencies and runtime environment, and many mule applications deploy on same mule runtime.</p>
+           <h3>Deployments with Cloudhub</h3>
+           <p>With the advent of IAAS platfrom like AWS that offered capabilities of elastic infrastructure provisioning at a global scale, CloudHub is integration PAAS platfrom that leverages provisioning and allocating resources from public cloud IAAS providers like AWS during the deploy phase of mule applications. CloudHub is comprised of platform services such as Application Data, Insight, Logs, Alerts, Virtual Private Cloud, Worker Management, Schedule Management and deployment & configuration access to these platform services is enabled through Runtime Manager and REST API. CloudHub deployments are more geared towards worker based deployments.</p>
+           <h3>Deployments with Runtime Fabric</h3>
+           <p>Container Based Deployment Model</p>
+        </div>
+    </div>
+</div>
+<custom-footer authorname='Jeetan' linkurl='https://www.linkedin.com/in/jeetan-madaan-37aaa113/'></custom-footer>
