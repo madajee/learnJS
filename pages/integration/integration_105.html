@@ -10,7 +10,7 @@
             <h3>Worker Model</h3>
             <p>In a worker based deployment model, each mule application is converted to a immutable container image that will be deployed as an Kubernetes POD which means mule runtime is part of application resources and not really installed along with provisioning of the cloud resources which was the needed with worker model.</p>
             <h3>Container Model</h3>
-            <p>In a container based deployment model, each mule application is an independent deployment with its runtime and resources.</p>
+            <p>In a container based deployment model, each mule application is an independent deployment with its runtime and resources. When we talk about containers, we mention docker which is platform netural application abstraction over operating system and Kubernetes is google open source orchestration engine to manage container workloads across clusters of nodes. So as long as you package your application as a docker image, one can deploy to kubernetes cluster with a master API provided by the Kubernetes copntroller, and then then there are components like Kubelet and Kube-proxy that helps maintains the desired state based on what you pass to master controller API. One of the ways to talk to API is using the kubectl command line utility.</p>
             <h3>Deployment Models on Anypoint Platform</h3>
             <p>Anypoint Platform has a Management Plane and Runtime Plane.</p>
             <ul class=space_list>
@@ -103,7 +103,7 @@
            <h3>Deployments with Cloudhub</h3>
            <p>With the advent of IAAS platfrom like AWS that offered capabilities of elastic infrastructure provisioning at a global scale, CloudHub is integration PAAS platfrom that leverages provisioning and allocating resources from public cloud IAAS providers like AWS during the deploy phase of mule applications. CloudHub is comprised of platform services such as Application Data, Insight, Logs, Alerts, Virtual Private Cloud, Worker Management, Schedule Management and deployment & configuration access to these platform services is enabled through Runtime Manager and REST API. CloudHub deployments are more geared towards worker based deployments.</p>
            <h3>Deployments with Runtime Fabric</h3>
-           <p>Container Based Deployment Model</p>
+           <p>As per the definition on <a href="https://docs.mulesoft.com/runtime-fabric/1.6/">As per Mule Docs, Anypoint Runtime Fabric</a> is a container service that automates the deployment and orchestration of Mule Applications and API gateways. Runtime Plane has three layers [RTF Runtime, K8 Layer, Gravity Layer] and agent component in the RTF Runtime layer binds the runtime plane to management plane of Anypoint Platform to enables features of API Manager, Runtime Manager and Exchange. As it is the immutable application image that runs as a container / pod, the deployment process creates the application image, registers it to the mulesoft registery and deploy as POD in worker node and ingress component in the controller nodes appropriately routes the request to the deployed replica.</p>
         </div>
     </div>
 </div>
