@@ -1,0 +1,63 @@
+<div class = "container-fluid mt-2">
+    <div class="row">
+        <integration-side-menu></integration-side-menu>
+        <div class="col-md-10">
+            <h6 class="text-center">INTEGRATION 106</h6>
+            <h3>Pace Towards Microservcies</h3>
+            <p>Microservices is a distributed architecture and there is lot of complexity with it but it is an architecture that gives businesses an option to thrive in this modern world.</p>
+            <h3>Principles Of Microservices</h3>
+            <ul>
+                <li>
+                    Model services around <strong>business domains</strong> and not in long horizontal layers.
+                </li>
+                <li>
+                    Adopt <strong>Automation</strong> in the culture and keep learning from cloud native technologies.
+                </li>
+                <li>
+                    Reduce the <strong>implementation depdendencies</strong> and things like centralized DB schemas that bind to monoliths or horizontal service layer doesn't exist in microservcies enterprise.
+                </li>
+                <li>
+                    Decision making in teams are usually autonomous to support <strong>decentralization of things</strong>. 
+                </li>
+                <li>
+                    DevOps Teams and Tools enable services and apps to <strong>deploy independently</strong>. 
+                </li>
+                <li>
+                    <strong>Consumer First Design</strong> of microservices has to push towards internet scale, so even for MVP or initial features, the design and infrastructure should support elastic behavior of internet consumers.
+                </li>
+                <li>
+                    Services are usually developed with features and replication mindset so they grow exponentially which means that communication across services will be complex and it can be difficult to isolate failure. So it is very important to design with principle of <strong>Isolate Failure</strong>.
+                </li>
+                <li>
+                    DevOps Teams and Tools enable services and apps to <strong>deploy independently</strong>. 
+                </li>
+                <li>
+                  Systems and Transactions in microservices enterprise should be <strong>highly observable.</strong>. 
+                </li>
+            </ul>
+            <h3>Architectural Concerns in Microservices Architecture</h3>
+            <ul>
+                <li>
+                    <strong>Distributed Logging:</strong>Do we have some sidecar which will deployed along with the microservice that will help the service developer produce logs that can consolidated in a log aggregation systems? Are we using some kind of stream platform where the log messages are pushed and then filtered / consolidated to generate insigts about the requests? How will we identify the request so that we can isolate failure and have an observable path, do we have a context id and its hierarchy? Are we keeping this context id consistent across the architecture by using some wrapper framework implementation or with a common gateway component? 
+                </li>
+                <li>
+                    <strong>Reporting with bounded contexts of Microservices: </strong>Data in microservices ecosystem reside in a bounded context, so should we directly connect to data layer of each microservice for reporting requirements ? Can we request microservice to expose methods to retrieve the data for reporting needs? Can each microservice piublish an reporting event whicn can populate the reporting database, but you will have to build data capture services over the reporting database to generate insights? It seems lot of data lake project are geared towards pushing data and creating these data capture servcies in entprise microservices tranformation journey.                
+                </li>
+                <li>
+                    <strong>Testability:</strong> refers to the ease and completeness of testing. Ease of testing is usually enabled with test frameworks but completeness is managed along with the design of the services in an implementation. What is our test coverage, we can't deploy the service unless we have a coverage over 70%? How many bugs we are introducing in QA determines the quality of the automated tests and how we improve the tests when we are fixing issues ?  
+                </li>
+                <li>
+                    <strong>Performance and Responsiveness:</strong> refers how much time service takes to process a request or transaction and responisveness is how soon it responds to the consumer of a service. Do we use synchronous Rest calls or do we have asynchronous event processing because with event based design we can have faster response and not have to wait for the sucess or failure of a request. We will have less timeouts errors, however in event based design, error handling is a bit more complicated, we also need notfication services to publish the success and failure of requests.  
+                </li>
+                <li>
+                    <strong>Scalability and Elasticity:</strong> refers to mantain the response time as we increase on number of users and elasticcity in particular refers to handling requests and mantaining a response time during spikes and peak timeframes. As system is made of several components and services, we need to see how increase in number of requests impact the components and services? We improve scability by adding more nodes but do we rely on elastic infrastructure in the cloud. And even though we rely on elastic infrastructure, are all components and service are enabled for scalability and elasticity? Can we use techniques like autoscaling to handle peak timeframes and seasons?
+                </li>
+                <li>
+                    <strong>Deploybility:</strong> refers to how can we push changes to upstream environments without impacting the users. Most teams have CI/CD enablement and DevOps tools to automate the deployments but the frequency or risk of  deployments really vary whether we are building features in monolith which are either designed in layers or comprised of components, creating extensible services in larger SOA landscape or we are developing small independent deployable services in Microservices enterprise. As we push towards micorservices enterprise, we are really pushing towards automated test and deployments of smaller features in a controlled manner so that business runs as usual.  
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</div>
+<custom-footer authorname='Jeetan' linkurl='https://www.linkedin.com/in/jeetan-madaan-37aaa113/'></custom-footer>
