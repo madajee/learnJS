@@ -44,6 +44,14 @@ app.directive("integrationSideMenu", function(){
     }
 });
 
+app.directive("platformSideMenu", function(){
+    return {
+        restrict: 'E',
+        templateUrl: 'pages/directives/platform-side-menu.html',
+        replace: true
+    }
+});
+
 app.directive("homeSideMenu", function(){
     return {
         restrict: 'E',

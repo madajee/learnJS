@@ -1,0 +1,92 @@
+<div class = "container-fluid mt-2">
+    <div class="row">
+        <platform-side-menu></platform-side-menu>
+        <div class="col-md-10">
+            <h6 class="text-center">AWS 101</h6>
+            <h3>Understanding Identity and Access Management (IAM)</h3>
+            <ul>
+                <li>At the highest level is an organization which usually has a master account</li>
+                <li>Organization can have multiple organization units and each org unit can have one or more accounts.</li>
+                <li>IAM Identities belong to an account and should be provided permissions to access resources in an account.</li>
+                <li>When you a small org, you create limited IAM users, couple of groups to manage your users and create policies to provide permission to the users.</li>
+                <li>Roles in AWS are short term priviledges that are assigned to IAM identities to control access to resources. Roles in AWS platform is also used for providing access to resources from application and AWS services </li>
+                <li>After the successful authentication and acquiring grants based on the role, appropriate authorization is controlled with the application of AWS policies</li>
+                <li>Either when the org grows or multiple projects teams start using AWS, you will have scenarios where you will shape up your AWS Organization.</li>
+            </ul>
+            <h3>AWS Single Sign On</h3>
+            <ul>
+                <li>AWS SSO User Pool</li>
+                <li>AWS SSO with Azure AD or other User Identity Federation Service</li>
+                <li>IAM Identities belong to an account and should be provided permissions to access resources in an account.</li>
+                <li>When you a small org, you create limited IAM users, couple of groups to manage your users and create policies to provide permission to the users.</li>
+                <li>Either when the org grows or multiple projects teams start using AWS, you will have scenarios where you will shape up your AWS Organization.</li>
+            </ul>
+            <h3>How Authorization Works</h3>
+            <p>AWS is designed with the principle of least priviledges which mean you need permission for everything.</p>
+            <ul>
+                <li>if any policies denies -> Access Denied</li>
+                <li>If some policy allows -> Allow</li>
+                <li>Else Access Denied</li>
+            </ul>
+            <h3>Examples</h3>
+            <ul>
+                <li>Read Data from DynamoDB</li>
+                <pre>
+                    <code> 
+                   {
+                       "Effect": "Allow",
+                       "Action": [
+                        "dynamodb:GetItem",
+                        "dynamodb:PutItem" 
+                       ],
+                       "Resource" : [
+                        "arn:aws:dynamodb:us-east-2:resourceidentifier:table/tablename"
+                       ]
+                   }
+                    </code>                    
+                </pre>
+                <li>Launch Specific EC2 Instance Types</li>
+                <pre>
+                    <code> 
+                   {
+                       "Effect": "Allow",
+                       "Action": "ec2:RunInstance",
+                       "Resource" : [
+                        "arn:aws:ec2:*:*:subnet/*",
+                        "arn:aws:ec2:*:*:security-group/*",
+                        "arn:aws:ec2:*:*:key-pair/*",
+                        "arn:aws:ec2:*:*:volume/*",
+                        "arn:aws:ec2:*:*:image/*",
+                        "arn:aws:ec2:*:*:network-interface/*"
+                       ]
+                   }
+                    </code>                    
+                </pre>
+                <li>Prevent unencrypted writes to S3</li>
+                <pre>
+                    <code> 
+                   {
+                       "Effect": "DENY",
+                       "Action": "s3:PutObject",
+                       "Resource" : "arn:aws:s3:::example-bucket/*",
+                       "Condition" : [
+                        "StringNotEqualIfExists": {
+                            "s3:x-amz-server-side-encryption-aws-kms-key-id": [
+                                "arn:aws:kms:us-east-2:11122223333:key/12345678-1234-1234-1234-12345678abcd"
+                            ]
+                        }
+                       ]
+                   },
+                   {
+                    "Effect": "Allow",
+                    "Action": ["s3:PutObject","s3:GetObject"],
+                    "Resource" : "arn:aws:s3:::example-bucket/*"
+                   }
+                    </code>                    
+                </pre>  
+            </ul>
+           
+        </div>
+    </div>
+</div>
+<custom-footer authorname='Jeetan' linkurl='https://www.linkedin.com/in/jeetan-madaan-37aaa113/'></custom-footer>

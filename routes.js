@@ -42,6 +42,17 @@ app.config(function ($routeProvider) {
         controller: 'learnjsController'
     })
     .
+    when('/platform', {
+        templateUrl: 'pages/platform/platform_100.html',
+        controller: 'learnjsController'
+    })
+    .when('/platform/:platformid', {
+        templateUrl: function (param) {
+            return 'pages/platform/platform_' + param.platformid + '.html'
+        },
+        controller: 'learnjsController'
+    })
+    .
     otherwise('/');
     
 });
